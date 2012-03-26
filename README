@@ -1,3 +1,9 @@
+XBMC plugin to view Channel 4 4od content.
+
+Based on project by nibor
+
+Changelog for old project:
+
 Version 1.0.1 (29 Dec 2011)
 
 - Added a setting for default select action: Play/Download/Ask (Thanks to alcoheca)
