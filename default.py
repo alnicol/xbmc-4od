@@ -147,9 +147,13 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 	cdn = re.search( '<cdn>(.*?)</cdn>', uriData, re.DOTALL).groups()[0]
 	decodedToken = fourOD_token_decoder.Decode4odToken(token)
 	if ( cdn ==  "ll" ):
-		ip = re.search( '<ip>(.*?)</ip>', uriData, re.DOTALL ).groups()[0]
 		e = re.search( '<e>(.*?)</e>', uriData, re.DOTALL ).groups()[0]
-		auth = "e=%s&ip=%s&h=%s" % (e,ip,decodedToken)
+		ipresult = re.search( '<ip>(.*?)</ip>', uriData, re.DOTALL )
+		if ipresult is not None:
+			ip = ipresult.groups()[0]
+			auth = "e=%s&ip=%s&h=%s" % (e,ip,decodedToken)
+		else:
+			auth = "e=%s&h=%s" % (e,decodedToken)	
 	else:
 		fingerprint = re.search( '<fingerprint>(.*?)</fingerprint>', uriData, re.DOTALL ).groups()[0]
 		slist = re.search( '<slist>(.*?)</slist>', uriData, re.DOTALL ).groups()[0]
@@ -161,7 +165,7 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 		url = url.replace( '.com/', '.com:1935/' )
 		playpath = re.search( '(mp4:.*)', streamUri, re.DOTALL ).groups()[0]
 		playpath = playpath + '?' + auth
-		swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.8.5.swf"
+		swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
 		playURL = "%s?ovpfv=1.1&%s playpath=%s swfurl=%s swfvfy=true" % (url,auth,playpath,swfplayer)
 		
 		li = xbmcgui.ListItem(title)
@@ -228,7 +232,7 @@ def CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ):
 	#-r "rtmpe://ak.securestream.channel4.com:1935/4oD/?ovpfv=1.1&auth=da_ana4cDc3d_d4dtaPd0clcndUa3claHcG-boODFj-eS-gxS-s8p4mbq4tRlim9lSmdpcp6l1nb&aifp=v002&slist=assets/CH4_08_02_900_47548001001002_005.mp4"
 	#-a "4oD/?ovpfv=1.1&auth=da_ana4cDc3d_d4dtaPd0clcndUa3claHcG-boODFj-eS-gxS-s8p4mbq4tRlim9lSmdpcp6l1nb&aifp=v002&slist=assets/CH4_08_02_900_47548001001002_005.mp4"
 	#-f "WIN 11,0,1,152"
-	#-W "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.8.5.swf"
+	#-W "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
 	#-p "http://www.channel4.com/programmes/peep-show/4od/player/3156662"
 	#-C Z:
 	#-y "mp4:assets/CH4_08_02_900_47548001001002_005.mp4"
@@ -240,7 +244,7 @@ def CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ):
 	app = re.search( '.com/(.*?)mp4:', streamUri, re.DOTALL ).groups()[0]
 	app = app + "?ovpfv=1.1&" + auth
 	#swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.8.swf"
-	swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.8.5.swf"
+	swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
 	playpath = re.search( '.*?(mp4:.*)', streamUri, re.DOTALL ).groups()[0]
 	playpath = playpath + "?" + auth
 	args = [
@@ -306,7 +310,7 @@ def remove_extra_spaces(data):
    
 if __name__ == "__main__":
 	try:
-		geturllib.SetCacheDir( xbmc.translatePath(os.path.join( "T:"+os.sep,"addon_data", gPluginName,'cache' )) )
+		geturllib.SetCacheDir( xbmc.translatePath(os.path.join("special://home","addon_data", gPluginName,'cache' )) )
 		
 		if ( mycgi.EmptyQS() ):
 			ShowCategories()
