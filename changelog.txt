@@ -1,0 +1,11 @@
+Version 1.0.1 (29 Dec 2011)
+
+- Added a setting for default select action: Play/Download/Ask (Thanks to alcoheca)
+- Added genre, episode number and first aired date episode information
+- Remove unused subprocess module reference which caused errors on some platforms
+- Changed use of deprecated md5 module to hashlib.md5 where available
+- Fixed problem where duplicate episodes would sometimes appear
+
+Version 1.0.0
+
+- Initial release

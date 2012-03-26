@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<settings>		
+	<category label="General">
+	 <setting id="select_action" type="labelenum" label="Default action on select" default="Ask" values="Ask|Play|Download"/>
+	</category>
+	<category label="Downloads">
+	 <setting id="rtmpdump_path" type="file" label="Path to rtmpdump" default=""/>
+	 <setting id="download_folder" type="folder" label="Default download folder" default=""/>
+	 <setting id="ask_folder" type="bool" label="Ask for folder" default="false"/>
+	 <setting id="ask_filename" type="bool" label="Ask for filename" default="false"/>
+	</category>
+</settings>
