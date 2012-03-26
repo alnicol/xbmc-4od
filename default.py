@@ -134,7 +134,7 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 	if ( action == 'Ask' ):
 		dialog = xbmcgui.Dialog()
 		ret = dialog.yesno(title, 'Do you want to play or download?', '', '', 'Download',  'Play') # 1=Play; 0=Download
-	elif ( action == 'Downlad' ):
+	elif ( action == 'Download' ):
 		ret = 0
 	else:
 		ret = 1
