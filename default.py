@@ -148,12 +148,11 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 	decodedToken = fourOD_token_decoder.Decode4odToken(token)
 	if ( cdn ==  "ll" ):
 		e = re.search( '<e>(.*?)</e>', uriData, re.DOTALL ).groups()[0]
-		ipresult = re.search( '<ip>(.*?)</ip>', uriData, re.DOTALL )
-		if ipresult is not None:
-			ip = ipresult.groups()[0]
-			auth = "e=%s&ip=%s&h=%s" % (e,ip,decodedToken)
+		ip = re.search( '<ip>(.*?)</ip>', uriData, re.DOTALL )
+		if (ip):
+			auth = "e=%s&ip=%s&h=%s" % (e,ip.groups()[0],decodedToken)
 		else:
-			auth = "e=%s&h=%s" % (e,decodedToken)	
+			auth = "e=%s&h=%s" % (e,decodedToken)
 	else:
 		fingerprint = re.search( '<fingerprint>(.*?)</fingerprint>', uriData, re.DOTALL ).groups()[0]
 		slist = re.search( '<slist>(.*?)</slist>', uriData, re.DOTALL ).groups()[0]
@@ -168,6 +167,7 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 		swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
 		playURL = "%s?ovpfv=1.1&%s playpath=%s swfurl=%s swfvfy=true" % (url,auth,playpath,swfplayer)
 		
+		print "PLAY URL: " + playURL
 		li = xbmcgui.ListItem(title)
 		li.setInfo('video', {'Title': title})
 		xbmc.Player().play( playURL, li )
@@ -212,9 +212,11 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 		from subprocess import Popen, PIPE, STDOUT
 		
 		cmdline = CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ) 
+		print "COMMAND LINE: " + cmdline
 		xbmc.executebuiltin('XBMC.Notification(4oD,Starting download: %s)' % filename)
 		p = Popen( cmdline, shell=True, stdin=PIPE, stdout=PIPE, stderr=STDOUT )
 		x = p.stdout.read()
+		print x
 		import time 
 		while p.poll() == None:
 			time.sleep(2)
@@ -243,7 +245,7 @@ def CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ):
 	rtmpUrl = rtmpUrl + "?ovpfv=1.1&" + auth
 	app = re.search( '.com/(.*?)mp4:', streamUri, re.DOTALL ).groups()[0]
 	app = app + "?ovpfv=1.1&" + auth
-	#swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.8.swf"
+	#swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
 	swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
 	playpath = re.search( '.*?(mp4:.*)', streamUri, re.DOTALL ).groups()[0]
 	playpath = playpath + "?" + auth
@@ -257,8 +259,7 @@ def CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ):
 				#"--pageUrl xxxxxx",
 				"--conn", "Z:",
 				"--playpath", '"%s"'%playpath,
-				"-o", '"%s"' % savePath,
-				"--verbose"
+				"-o", '"%s"' % savePath
 				]
 	cmdline = ' '.join(args)
 		
