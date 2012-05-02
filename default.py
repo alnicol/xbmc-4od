@@ -164,7 +164,7 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 		url = url.replace( '.com/', '.com:1935/' )
 		playpath = re.search( '(mp4:.*)', streamUri, re.DOTALL ).groups()[0]
 		playpath = playpath + '?' + auth
-		swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
+		swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.23.4.swf"
 		playURL = "%s?ovpfv=1.1&%s playpath=%s swfurl=%s swfvfy=true" % (url,auth,playpath,swfplayer)
 		
 		print "PLAY URL: " + playURL
@@ -208,7 +208,7 @@ def PlayOrDownloadEpisode( episodeId, title, defFilename='' ):
 			if ( downloadFolder == '' ):
 				return
 				
-		savePath = os.path.join( "T:"+os.sep, downloadFolder, filename )
+		savePath = os.path.join(downloadFolder, filename )
 		from subprocess import Popen, PIPE, STDOUT
 		
 		cmdline = CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ) 
@@ -234,7 +234,7 @@ def CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ):
 	#-r "rtmpe://ak.securestream.channel4.com:1935/4oD/?ovpfv=1.1&auth=da_ana4cDc3d_d4dtaPd0clcndUa3claHcG-boODFj-eS-gxS-s8p4mbq4tRlim9lSmdpcp6l1nb&aifp=v002&slist=assets/CH4_08_02_900_47548001001002_005.mp4"
 	#-a "4oD/?ovpfv=1.1&auth=da_ana4cDc3d_d4dtaPd0clcndUa3claHcG-boODFj-eS-gxS-s8p4mbq4tRlim9lSmdpcp6l1nb&aifp=v002&slist=assets/CH4_08_02_900_47548001001002_005.mp4"
 	#-f "WIN 11,0,1,152"
-	#-W "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
+	#-W "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.23.4.swf"
 	#-p "http://www.channel4.com/programmes/peep-show/4od/player/3156662"
 	#-C Z:
 	#-y "mp4:assets/CH4_08_02_900_47548001001002_005.mp4"
@@ -246,7 +246,7 @@ def CreateRTMPDUMPCmd( rtmpdump_path, streamUri, auth, savePath ):
 	app = re.search( '.com/(.*?)mp4:', streamUri, re.DOTALL ).groups()[0]
 	app = app + "?ovpfv=1.1&" + auth
 	#swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
-	swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.21.2.swf"
+	swfplayer = "http://www.channel4.com/static/programmes/asset/flash/swf/4odplayer-11.23.4.swf"
 	playpath = re.search( '.*?(mp4:.*)', streamUri, re.DOTALL ).groups()[0]
 	playpath = playpath + "?" + auth
 	args = [
